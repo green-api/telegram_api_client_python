@@ -1,0 +1,26 @@
+import asyncio
+import os
+from telegram_api_client_python import API
+
+greenAPI = API.GreenAPI(
+    "4100000000", "d75b3a66374942c5b3c019c698abc2067e151558acbd412345"
+)
+
+async def main():
+    file_path = "data/logo.jpg"
+    if not os.path.exists(file_path):
+        print(f"File {file_path} not found")
+    else:
+        response = await greenAPI.sending.sendFileByUploadAsync(
+            "79876543210@c.us",
+            file_path,
+            "logo.jpg",
+            "logo",
+            typingTime=5000,
+            typingType="recording"
+        )
+        if response.code == 200:
+            print(response.data)
+
+if __name__ == '__main__':
+    asyncio.run(main())
