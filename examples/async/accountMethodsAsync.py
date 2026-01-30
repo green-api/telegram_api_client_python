@@ -1,0 +1,22 @@
+import asyncio
+from telegram_api_client_python import API
+
+greenAPI = API.GreenAPI(
+    "4100000000", "d75b3a66374942c5b3c019c698abc2067e151558acbd412345"
+)
+
+async def main():
+    tasks = [
+        greenAPI.account.getSettingsAsync(),
+        greenAPI.account.getAccountSettingsAsync(),
+        greenAPI.account.setSettingsAsync({"outgoingWebhook": "yes", "incomingWebhook": "yes"}),
+        greenAPI.account.getStateInstanceAsync(),
+        greenAPI.account.rebootAsync(),
+        greenAPI.account.qrAsync()
+    ]
+    
+    responses = await asyncio.gather(*tasks, return_exceptions=True)
+    [print(response.data) for response in responses if response.code == 200]
+
+if __name__ == '__main__':
+    asyncio.run(main())
